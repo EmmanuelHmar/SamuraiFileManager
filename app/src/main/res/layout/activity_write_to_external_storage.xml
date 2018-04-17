@@ -1,38 +1,52 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="16dp">
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/write_toolbar"
+        android:title="@string/app_name"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ToolbarStyle" />
 
     <EditText
-        android:id="@+id/external_storage_editor_email"
+        android:id="@+id/text_file_contents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter text for txt file"
+        android:hint="Enter text contents"
+        android:layout_margin="16dp"
+        />
+
+    <EditText
+        android:id="@+id/text_file_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter text name"
+        android:layout_margin="16dp"
         />
 
     <Button
         android:id="@+id/external_storage_button_save_public"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save To External Storage"/>
+        android:text="Write To Public External Directory"
+        android:layout_margin="16dp"/>
 
     <Button
         android:id="@+id/external_storage_button_save_private"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save To Private External Storage"/>
+        android:text="Write To Private External Directory"
+        android:layout_margin="16dp"/>
 
     <Button
         android:id="@+id/external_storage_button_save_private_cache"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save To Private Cached External Storage"/>
-
-    <!--<Button-->
-        <!--android:id="@+id/external_storage_button_display_path"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Display External Storage Directory Path"/>-->
+        android:text="Write a cache file"
+        android:layout_margin="16dp"/>
 
 </LinearLayout>

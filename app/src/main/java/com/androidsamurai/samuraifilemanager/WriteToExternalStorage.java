@@ -9,6 +9,7 @@ import android.os.StatFs;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,43 +30,48 @@ public class WriteToExternalStorage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_to_external_storage);
 
-        setTitle("dev2qa.com - Android External Storage Example.");
+        Toolbar toolbar = findViewById(R.id.write_toolbar);
+        setSupportActionBar(toolbar);
 
-        final EditText emailEditor = (EditText) findViewById(R.id.external_storage_editor_email);
+        setTitle("Write to File");
+
+        final EditText textContents = findViewById(R.id.text_file_contents);
+        final EditText textFileName = findViewById(R.id.text_file_name);
 
         // Save email to a public external storage folder.
-        Button savePublicExternalStorageButton = (Button) findViewById(R.id.external_storage_button_save_public);
+        Button savePublicExternalStorageButton = findViewById(R.id.external_storage_button_save_public);
         savePublicExternalStorageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 try {
                     if (isExternalStorageMounted()) {
+                        final String fileName = textFileName.getText().toString() + ".txt";
 
                         // Save email_public.txt file to /storage/emulated/0/DCIM folder
-                        String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString();
+                        String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString();
 //                        String dirPath = getPublicExternalStorageBaseDir(Environment.DIRECTORY_DOWNLOADS);
 
 //                        File file = new File(Environment.getExternalStoragePublicDirectory(
 //                                Environment.DIRECTORY_DOCUMENTS);
 
-                        File newFile = new File(dirPath, "email_public2.txt");
+                        File newFile = new File(dirPath, fileName);
 
                         FileWriter fileWriter = new FileWriter(newFile);
 
-                        fileWriter.write(emailEditor.getText().toString());
+                        fileWriter.write(textContents.getText().toString());
 
                         fileWriter.flush();
 
                         fileWriter.close();
 
-                        Toast.makeText(getApplicationContext(), "Save to public external storage success. File Path " + newFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Success. File Path " + newFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
                     }
 
                 } catch (Exception ex) {
                     Log.e(LOG_TAG_EXTERNAL_STORAGE, ex.getMessage(), ex);
 
-                    Toast.makeText(getApplicationContext(), "Save to public external storage failed. Error message is " + ex.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Fail. Error message is " + ex.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -80,6 +86,7 @@ public class WriteToExternalStorage extends AppCompatActivity {
 
                 try {
                     if (isExternalStorageMounted()) {
+                        final String fileName = textFileName.getText().toString() + ".txt";
 
                         // Check whether this app has write external storage permission or not.
                         int writeExternalStoragePermission = ContextCompat.checkSelfPermission(WriteToExternalStorage.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -91,14 +98,14 @@ public class WriteToExternalStorage extends AppCompatActivity {
 
                             // Save email_private.txt file to /storage/emulated/0/Android/data/com.dev2qa.example/files folder
 //                    String privateDirPath = getPrivateExternalStorageBaseDir(getApplicationContext(), null);
-                            File privateDirPath = getPrivateFolderStorageDir(getApplicationContext(), "Test2");
+                            File privateDirPath = getPrivateFolderStorageDir(getApplicationContext(), null);
 
-                            File newFile = new File(privateDirPath, "email_private.txt");
+                            File newFile = new File(privateDirPath, fileName);
 
                             File temp = getTempFile(getApplicationContext(), "Text.txt");
                             FileWriter fileWriter = new FileWriter(temp);
 
-                            fileWriter.write(emailEditor.getText().toString());
+                            fileWriter.write(textContents.getText().toString());
 
                             fileWriter.flush();
 
@@ -124,6 +131,7 @@ public class WriteToExternalStorage extends AppCompatActivity {
 
                 try {
                     if (isExternalStorageMounted()) {
+                        final String fileName = textFileName.getText().toString() + ".txt";
 
                         // Check whether this app has write external storage permission or not.
                         int writeExternalStoragePermission = ContextCompat.checkSelfPermission(WriteToExternalStorage.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -136,11 +144,11 @@ public class WriteToExternalStorage extends AppCompatActivity {
                             // Save email_private_cache.txt file to /storage/emulated/0/Android/data/com.dev2qa.example/cache folder
                             String privateDirPath = getPrivateCacheExternalStorageBaseDir(getApplicationContext());
 
-                            File newFile = new File(privateDirPath, "email_private_cache.txt");
+                            File newFile = new File(privateDirPath, fileName);
 
                             FileWriter fw = new FileWriter(newFile);
 
-                            fw.write(emailEditor.getText().toString());
+                            fw.write(textContents.getText().toString());
 
                             fw.flush();
 
