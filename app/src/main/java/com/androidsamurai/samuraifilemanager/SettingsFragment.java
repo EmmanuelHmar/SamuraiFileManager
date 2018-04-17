@@ -54,10 +54,10 @@ public class SettingsFragment extends PreferenceFragment {
             }
         }
 
-        ListPreference listPref = (ListPreference)findPreference(getResources().getString(R.string.default_folder_key));
+        ListPreference listPref = (ListPreference)findPreference(getResources().getString(R.string.default_folder));
         listPref.setEntries(entries);
         listPref.setEntryValues(entryValues);
         listPref.setDefaultValue(PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(
-                getResources().getString(R.string.default_folder_key),internalStoragePath));
+                getResources().getString(R.string.default_folder),internalStoragePath));
     }
 }

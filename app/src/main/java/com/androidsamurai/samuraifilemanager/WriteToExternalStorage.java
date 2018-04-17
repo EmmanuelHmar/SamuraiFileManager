@@ -48,12 +48,8 @@ public class WriteToExternalStorage extends AppCompatActivity {
                     if (isExternalStorageMounted()) {
                         final String fileName = textFileName.getText().toString() + ".txt";
 
-                        // Save email_public.txt file to /storage/emulated/0/DCIM folder
+                        // Save file to documents
                         String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString();
-//                        String dirPath = getPublicExternalStorageBaseDir(Environment.DIRECTORY_DOWNLOADS);
-
-//                        File file = new File(Environment.getExternalStoragePublicDirectory(
-//                                Environment.DIRECTORY_DOCUMENTS);
 
                         File newFile = new File(dirPath, fileName);
 
@@ -61,17 +57,15 @@ public class WriteToExternalStorage extends AppCompatActivity {
 
                         fileWriter.write(textContents.getText().toString());
 
-                        fileWriter.flush();
-
                         fileWriter.close();
 
-                        Toast.makeText(getApplicationContext(), "Success. File Path " + newFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "SUCCESS. . File Path: " + newFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
                     }
 
                 } catch (Exception ex) {
                     Log.e(LOG_TAG_EXTERNAL_STORAGE, ex.getMessage(), ex);
 
-                    Toast.makeText(getApplicationContext(), "Fail. Error message is " + ex.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "FAIL. Error message: " + ex.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -107,18 +101,18 @@ public class WriteToExternalStorage extends AppCompatActivity {
 
                             fileWriter.write(textContents.getText().toString());
 
-                            fileWriter.flush();
+//                            fileWriter.flush();
 
                             fileWriter.close();
 
-                            Toast.makeText(getApplicationContext(), "Save to private external storage success. File Path " + newFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "SUCCESS. . File Path: " + newFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
                         }
                     }
 
                 } catch (Exception ex) {
                     Log.e(LOG_TAG_EXTERNAL_STORAGE, ex.getMessage(), ex);
 
-                    Toast.makeText(getApplicationContext(), "Save to private external storage failed. Error message is " + ex.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "FAIL. Error message: " + ex.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -146,22 +140,22 @@ public class WriteToExternalStorage extends AppCompatActivity {
 
                             File newFile = new File(privateDirPath, fileName);
 
-                            FileWriter fw = new FileWriter(newFile);
+                            FileWriter fileWriter = new FileWriter(getTempFile(getApplicationContext(), fileName));
 
-                            fw.write(textContents.getText().toString());
+                            fileWriter.write(textContents.getText().toString());
 
-                            fw.flush();
+//                            fileWriter.flush();
 
-                            fw.close();
+                            fileWriter.close();
 
-                            Toast.makeText(getApplicationContext(), "Save to private external storage success. File Path " + newFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "SUCCESS. File Path: " + newFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
                         }
                     }
 
                 } catch (Exception ex) {
                     Log.e(LOG_TAG_EXTERNAL_STORAGE, ex.getMessage(), ex);
 
-                    Toast.makeText(getApplicationContext(), "Save to private external storage failed. Error message is " + ex.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "FAIL. " + ex.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -209,9 +203,17 @@ public class WriteToExternalStorage extends AppCompatActivity {
         return ret;
     }
 
+    public File getPublicDocumentsStorageDir(String folderName) {
+        // Get the directory for the user's public pictures directory.
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS), folderName);
+
+        return file;
+    }
+
+
     public File getPrivateFolderStorageDir(Context context, String folderName) {
         // Get the directory for the app's private albumName (optional) directory.
-//        File file = new File(context.getExternalFilesDir(folderName));
         File file = context.getExternalFilesDir(folderName);
 
         return file;

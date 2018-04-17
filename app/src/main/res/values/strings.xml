@@ -13,5 +13,5 @@
     <string name="settings_default_folder">Default (home) folder</string>
     <string name="settings_default_folder_dialog">Choose folder..</string>
 
-    <string name="default_folder_key">default_folder</string>
+    <string name="default_folder">default_folder</string>
 </resources>

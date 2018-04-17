@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v7.view.ActionMode;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +20,6 @@ public class ActionModeCallback implements ActionMode.Callback{
     private MainActivity activity;
     private FileAdapter filesAdapter;
     private String currentPath;
-
-    private static final String TAG = "ActionModeCallback";
 
     ActionModeCallback(MainActivity activity, FileAdapter filesAdapter, String currentPath){
         this.activity = activity;
@@ -47,7 +44,7 @@ public class ActionModeCallback implements ActionMode.Callback{
             final List<File> filesToDelete = listFilesToDelete(filesAdapter.getSelectedItems());
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(activity,
                     R.style.AlertDialog));
-            builder.setMessage("Do you really want to delete " + String.valueOf(filesToDelete.size()) + " files?")
+            builder.setMessage("Do you want to delete " + String.valueOf(filesToDelete.size()) + " files?")
                     .setNegativeButton(android.R.string.no,null)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
@@ -112,7 +109,7 @@ public class ActionModeCallback implements ActionMode.Callback{
 
         DeleteAsyncTask(MainActivity activity, List<File> filesToDelete){
             progressDialog = new ProgressDialog(new ContextThemeWrapper(activity, R.style.AlertDialog));
-            progressDialog.setMessage("The dataset is being downloaded..");
+            progressDialog.setMessage("Starting download of dataset");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setProgress(0);
             progressDialog.setCancelable(false);
@@ -130,7 +127,6 @@ public class ActionModeCallback implements ActionMode.Callback{
         protected Void doInBackground(Void... voids){
             for (int i = filesToDelete.size()-1; i >= 0; i--) {
                 if(!filesToDelete.get(i).delete()){
-                    Log.w(TAG,"Error during deleting " + filesToDelete.get(i).getPath());
                     succesful = false;
                 }
             }
@@ -141,7 +137,7 @@ public class ActionModeCallback implements ActionMode.Callback{
         protected void onPostExecute(Void results){
             progressDialog.dismiss();
             if(!succesful)
-                Toast.makeText(activity, "Problem occured, some of selected files might not be deleted..",
+                Toast.makeText(activity, "Some error happened",
                         Toast.LENGTH_SHORT).show();
             activity.unsetActionMode();
             activity.refreshFiles();

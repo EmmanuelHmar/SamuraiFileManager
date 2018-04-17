@@ -25,36 +25,43 @@ public class FileAdapter extends BaseAdapter {
     private List<File> folders = new ArrayList<>();
     private List<File> files = new ArrayList<>();
     private MainActivity activity;
+    //    byte offset is the number of character that exists counting from the beginning of a line.
     private byte offset;
     private boolean homeFolder;
 
     private Set<String> selectedItems = new HashSet<>();
 
-
     FileAdapter(File currentFolder, boolean homeFolder, MainActivity mainActivity) {
         this.currentFolder = currentFolder;
         this.homeFolder = homeFolder;
+
         if (homeFolder && currentFolder.getName().equals(""))
             offset = 0;
         else if (homeFolder || currentFolder.getName().equals(""))
             offset = 1;
         else
             offset = 2;
+
         this.activity = mainActivity;
+
+//       listFiles = Returns an array of abstract pathnames denoting the files and directories
         File[] foldersArray = currentFolder.listFiles(new FileFilter() {
             @Override
             public boolean accept(File file) {
                 return file.isDirectory() && !file.getName().startsWith(".");
             }
         });
+
         if (foldersArray != null)
             folders = new ArrayList<>(Arrays.asList(foldersArray));
+
         File[] filesArray = currentFolder.listFiles(new FileFilter() {
             @Override
             public boolean accept(File file) {
                 return !file.isDirectory() && !file.getName().startsWith(".");
             }
         });
+
         if (filesArray != null)
             files = new ArrayList<>(Arrays.asList(filesArray));
         Collections.sort(folders);
@@ -84,23 +91,21 @@ public class FileAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.activity
+            LayoutInflater layoutInflater = (LayoutInflater) this.activity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.file_item, parent, false);
+            convertView = layoutInflater.inflate(R.layout.file_item, parent, false);
         }
 
-        ImageView icon = convertView.findViewById(R.id.row_icon);
-        TextView name = convertView.findViewById(R.id.row_name);
-        TextView date = convertView.findViewById(R.id.row_date);
+        ImageView icon = convertView.findViewById(R.id.file_icon);
+        TextView name = convertView.findViewById(R.id.file_name);
 
-        date.setText("12:00:25");
         if (position < offset) {
             if (position == 0 && !homeFolder) {
                 icon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_home_black_24dp));
                 name.setText(activity.getResources().getString(R.string.home));
                 convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View view) {
                         if (activity.getActionMode() == null)
                             activity.setDefaultFolder();
                     }
@@ -110,7 +115,7 @@ public class FileAdapter extends BaseAdapter {
                 name.setText(activity.getResources().getString(R.string.up));
                 convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View view) {
                         if (activity.getActionMode() == null)
                             if (!currentFolder.getName().equals(""))
                                 activity.setCurrentFolder(currentFolder.getParentFile());
@@ -139,13 +144,6 @@ public class FileAdapter extends BaseAdapter {
 
         return convertView;
     }
-
-//        private String getLastDate(int position) {
-//        File m_file = new File(m_path.get(position));
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
-//        return dateFormat.format(m_file.lastModified());
-//    }
-
 
     // Selections
 

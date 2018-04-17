@@ -6,27 +6,20 @@
               android:layout_height="wrap_content">
 
     <ImageView
-            android:id="@+id/row_icon"
+            android:id="@+id/file_icon"
             android:contentDescription="@string/item_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:padding="5dp"
+            android:padding="6dp"
     />
 
     <TextView
-            android:id="@+id/row_name"
+            android:id="@+id/file_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="12dp"
-    />
-
-    <TextView
-            android:id="@+id/row_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="12dp"
+            android:padding="16dp"
     />
 
 </LinearLayout>
